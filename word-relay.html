@@ -31,7 +31,7 @@
         let newWord; // 새로 입력한 단어
 
         const onClickButton = () => {
-            if (!word) { // 제시어가 비어있는가?
+            if (!word || word[word.length - 1] === newWord[0]) { // 제시어가 비어있는가?
                 // 비어있다.
                 word = newWord; // 입력한 단어가 제시어가 된다.
                 $word.textContent = word; // 표시된 제시어를 입력한 단어로 바꾸기
@@ -41,28 +41,12 @@
                 } else { // 현재 순서가 게임 총 인원보다 작을 떄
                     $order.textContent = order + 1;
                 }
-                $input.value = '';
-                $input.focus();
-            } else {
-                // 비어 있지 않다.
-                if (word[word.length - 1] === newWord[0]) { // 올바른가
-                    word = newWord; // 입력한 단어가 제시어가 된다.
-                    $word.textContent = word;
-                    const order = Number($order.textContent); // 현재 순서
-                    if (order + 1 > number) { // 현재 순서가 게임 총 인원보다 크면
-                        $order.textContent = 1;
-                    } else { // 현재 순서가 게임 총 인원보다 작을 떄
-                        $order.textContent = order + 1;
-                    }
-                    $input.value = '';
-                    $input.focus();
-                } else { // 올바르지 않은가
+            } else { // 올바르지 않은가
                     alert('올바르지 않은 단어입니다.')
-                    $input.value = '';
-                    $input.focus();
                 }
-            }
-        };
+            $input.value = '';
+            $input.focus();
+            };
 
         const onInput = (event) => {
             newWord = event.target.value;
