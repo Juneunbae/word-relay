@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,6 +10,7 @@
 
     </style>
 </head>
+
 <body>
     <div><span id="order">1</span>번째 참가</div>
     <div>제시어 : <span id="word"></span></div>
@@ -16,16 +18,59 @@
     <button>입력</button>
     <script>
         const number = parseInt(prompt('몇 명이 참가하나요?'), 10);
+        const $button = document.querySelector('button');
+        const $input = document.querySelector('input');
+        const $word = document.querySelector('#word');
+        const $order = document.querySelector('#order')
+
         console.log('number', number);
         alert(number); // 경고창이라 값만 출력
         const yesOrNo = confirm('확인이나 취소를 눌러주세요.'); // 맞는지 맞지않는지 확인하는 창 띄우기
-        
-        document.querySelector('input').addEventListener('input', (event) => {
-	        console.log('글자 입력', event.target.value);
-        });
-        document.querySelector('button').addEventListener('click', function() {
-            console.log('버튼 클릭');
-        });
+
+        let word; // 제시어
+        let newWord; // 새로 입력한 단어
+
+        const onClickButton = () => {
+            if (!word) { // 제시어가 비어있는가?
+                // 비어있다.
+                word = newWord; // 입력한 단어가 제시어가 된다.
+                $word.textContent = word; // 표시된 제시어를 입력한 단어로 바꾸기
+                const order = Number($order.textContent); // 현재 순서
+                if (order + 1 > number) { // 현재 순서가 게임 총 인원보다 크면
+                    $order.textContent = 1;
+                } else { // 현재 순서가 게임 총 인원보다 작을 떄
+                    $order.textContent = order + 1;
+                }
+                $input.value = '';
+                $input.focus();
+            } else {
+                // 비어 있지 않다.
+                if (word[word.length - 1] === newWord[0]) { // 올바른가
+                    word = newWord; // 입력한 단어가 제시어가 된다.
+                    $word.textContent = word;
+                    const order = Number($order.textContent); // 현재 순서
+                    if (order + 1 > number) { // 현재 순서가 게임 총 인원보다 크면
+                        $order.textContent = 1;
+                    } else { // 현재 순서가 게임 총 인원보다 작을 떄
+                        $order.textContent = order + 1;
+                    }
+                    $input.value = '';
+                    $input.focus();
+                } else { // 올바르지 않은가
+                    alert('올바르지 않은 단어입니다.')
+                    $input.value = '';
+                    $input.focus();
+                }
+            }
+        };
+
+        const onInput = (event) => {
+            newWord = event.target.value;
+        };
+
+        $button.addEventListener('click', onClickButton);
+        $input.addEventListener('input', onInput);
     </script>
 </body>
+
 </html>
